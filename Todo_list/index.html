@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div class="wrapper">
+
+        <header class="header">
+            <h1>ToDo /List/</h1>
+
+            <form action="" name="formOfStyle" class="formOfStyle" id="formOfStyle">
+                <select name="style" class='select' id="select">
+                    <option selected value="Dark" id="dark">Dark</option>
+                    <option  value="Light" id="light">Light</option>
+                </select>
+            </form>
+            
+        </header>
+
+        <div class="containerForm">
+            <form name='form' class="form">
+                <input class="taskTitle" id="title" type="text" placeholder="Заголовок">
+                <input class="taskBody" id='body' type="text" placeholder="Введите описание задачи..."></input>
+                <button class="btn" id='btn' type="submit">Добавить задачу</button>
+            </form>
+            
+        </div>
+    </div>
+
+    <main id="main">
+        <ul class="containerOfTasks" id="list">
+        
+        </ul>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
