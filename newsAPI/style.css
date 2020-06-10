@@ -1,0 +1,47 @@
+*,
+*::after,
+*::before {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+
+body {
+
+}
+
+.container_header  {
+    height: 70px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgb(176, 176, 231);
+}
+
+.header span {
+    font-size: 40px;
+}
+
+
+.container_select {
+    height: 300px;
+    width: 450px;
+    margin: 0 auto;
+}
+
+/* container of cards */
+
+.container_newsCard {
+    width: 1400px;
+
+    margin: 0 auto;
+    
+    
+}
+
+
+
