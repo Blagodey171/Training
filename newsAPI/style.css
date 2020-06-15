@@ -30,7 +30,7 @@ body {
 .container_select {
     height: 300px;
     width: 450px;
-    margin: 0 auto;
+    margin: 40px auto 40px auto; 
 }
 
 /* container of cards */

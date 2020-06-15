@@ -123,7 +123,7 @@
 
     function onThemeHandler (e) {
         const selectedTheme = select.value;
-        console.log(selectedTheme)
+        // console.log(selectedTheme)
         const themeConfirm = confirm(`Применить тему ${selectedTheme}?`);
 
         if (!themeConfirm) return;
@@ -132,7 +132,7 @@
     
     function setTheme (value) {
         const name = theme[value];
-        console.log(name)
+        // console.log(name)
         Object.entries(name).forEach(([varName, varValue]) => {
             document.documentElement.style.setProperty(varName, varValue)
         });

@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     loadNews();
     
+
 });
 
 // методы для новостей Top Headlines and Everythings
@@ -30,6 +31,7 @@ const newsService = (function () {
     
                     xhr.send();
                 } catch (error) {
+                    console.log(error)
                     cb(error);
                 }
             },
@@ -69,26 +71,62 @@ const newsService = (function () {
 
     const apiKey = '193ebcc8ff02463597614d4b421a0bae';
     const url = 'https://news-api-v2.herokuapp.com';
+    const form = document.forms['searchNews'];
+    const select = form.elements['selectOfCountry'];
+    const inputValue = document.getElementById('search');
+    const containerNews = document.getElementById('container_newsCard');
 
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        clearNewsContainer(containerNews);
+
+        loadNews(select.value, inputValue.value);
+    })
+    
     return {
-        topHeadlines(country = 'belarus', cb) {
+        topHeadlines(country = 'us', cb) {
             objHttpMethods().get(`${url}/top-headlines?country=${country}&apiKey=${apiKey}`, cb)
         },
-        everythings() {},
+        everythings(searchParam, cb) {
+            // debugger
+            if (searchParam) {
+                objHttpMethods().get(`${url}/everything?q=${searchParam}&apiKey=${apiKey}`, cb)
+            } else objHttpMethods().get(`${url}/everything?q=random&apiKey=${apiKey}`, cb)
+            
+        },
     } 
 })();
 
-
+// очищение контейнера при поиске/выборе другой страны
+function clearNewsContainer (container) {
+    container.innerHTML = '';
+}
 // Новости при загрузке страницы
-function loadNews () {
-    newsService.topHeadlines('ru', renderResponse);
+function loadNews (country, searchParam) {
+    // debugger;
+    if (searchParam) {
+        newsService.everythings(searchParam, renderResponse);
+    } else {
+        newsService.topHeadlines(country, renderResponse);
+    }
 }
 
 
-// обработка response 
+// перебор/обработка response 
 function renderResponse (err, res){
     let articles = res.articles;
     let fragment = "";
+
+    if (err) {
+        // Toasts
+        console.log(err, res);
+        return;
+    }
+
+    if (!articles.length) {
+        // если неправильный запрос
+    }
     
     articles.forEach(itemRes => {
         fragment += processResponse(itemRes);
@@ -96,13 +134,12 @@ function renderResponse (err, res){
 
     document.querySelector('.container_newsCard').insertAdjacentHTML('afterbegin', fragment);
     console.log(articles);
-    // console.log(fragment);
 }
 
 // функция отрисовки response
     function processResponse ({author, description, publishedAt, title, url, urlToImage}) {
         return `
-            <div class="row">
+            <div class="row" id="row">
                 <div class="col s12 m7">
                     <div class="card">
                         <div class="card-image">
