@@ -15,7 +15,6 @@
     <header class="header">
         <div class="container_header">
             <span>News API</span>
-        </div>
     </header>
     <div class="container_select">
         <div class="input-field col s12">
@@ -26,12 +25,15 @@
                     <option selected value="us">USA</option>
                 </select>
                 <label>Change country,please!</label>
-                <div class="row">
-                    <div class="input-field col s12">
-                      <input id="search" type="text" class="serch">
-                      
-                    </div>
+                <div class="input-field col s12">
+                    <input id="search" type="text" class="serch">
+                    <label for="search">search</label>
                 </div>
+                <select name="selectOfCategory" class="selectOfCategory">
+                    <option value="business" >Business</option>
+                    <option value="science" selected>Science</option>
+                    <option value="sports" >Sport</option>
+                </select>
                 <button>Search</button>  
             </form>
             

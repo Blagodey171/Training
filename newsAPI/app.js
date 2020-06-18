@@ -1,11 +1,27 @@
+const apiKey = '193ebcc8ff02463597614d4b421a0bae';
+const url = 'https://news-api-v2.herokuapp.com';
+const form = document.forms['searchNews'];
+const selectCountry = form.elements['selectOfCountry'];
+const selectCategory = form.elements['selectOfCategory'];
+const inputValue = document.getElementById('search');
+const containerNews = document.getElementById('container_newsCard');
+
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems, '');
     
-    loadNews();
+    loadNews(selectCountry.value, inputValue.value, selectCategory.value);
     
 
 });
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    clearNewsContainer(containerNews);
+
+    loadNews(selectCountry.value, inputValue.value, selectCategory.value);
+})
 
 // методы для новостей Top Headlines and Everythings
 const newsService = (function () {
@@ -68,25 +84,10 @@ const newsService = (function () {
             },
         }
     };
-
-    const apiKey = '193ebcc8ff02463597614d4b421a0bae';
-    const url = 'https://news-api-v2.herokuapp.com';
-    const form = document.forms['searchNews'];
-    const select = form.elements['selectOfCountry'];
-    const inputValue = document.getElementById('search');
-    const containerNews = document.getElementById('container_newsCard');
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        clearNewsContainer(containerNews);
-
-        loadNews(select.value, inputValue.value);
-    })
     
     return {
-        topHeadlines(country = 'us', cb) {
-            objHttpMethods().get(`${url}/top-headlines?country=${country}&apiKey=${apiKey}`, cb)
+        topHeadlines(country = 'us', category, cb) {
+            objHttpMethods().get(`${url}/top-headlines?country=${country}&category=${category}&apiKey=${apiKey}`, cb)
         },
         everythings(searchParam, cb) {
             // debugger
@@ -101,17 +102,16 @@ const newsService = (function () {
 // очищение контейнера при поиске/выборе другой страны
 function clearNewsContainer (container) {
     container.innerHTML = '';
-}
+};
 // Новости при загрузке страницы
-function loadNews (country, searchParam) {
+function loadNews (country, searchParam, category) {
     // debugger;
     if (searchParam) {
         newsService.everythings(searchParam, renderResponse);
     } else {
-        newsService.topHeadlines(country, renderResponse);
+        newsService.topHeadlines(country, category, renderResponse);
     }
-}
-
+};
 
 // перебор/обработка response 
 function renderResponse (err, res){
@@ -120,12 +120,15 @@ function renderResponse (err, res){
 
     if (err) {
         // Toasts
-        console.log(err, res);
+        M.toast({html: err, displayLength: '5000'})
+        // console.log(err, res);
         return;
     }
 
     if (!articles.length) {
         // если неправильный запрос
+        M.toast({html: 'Некорректная строка поиска', displayLength: '5000'});
+        
     }
     
     articles.forEach(itemRes => {
@@ -134,26 +137,46 @@ function renderResponse (err, res){
 
     document.querySelector('.container_newsCard').insertAdjacentHTML('afterbegin', fragment);
     console.log(articles);
-}
+};
 
 // функция отрисовки response
-    function processResponse ({author, description, publishedAt, title, url, urlToImage}) {
+function processResponse ({author, description, publishedAt, title, url, urlToImage}) {
+    if (urlToImage === null) {
         return `
-            <div class="row" id="row">
-                <div class="col s12 m7">
-                    <div class="card">
-                        <div class="card-image">
-                            <img src=${urlToImage}>
-                            <span class="card-title">${title}</span>
-                        </div>
-                        <div class="card-content">
-                            <p> ${description} </p>
-                        </div>
-                        <div class="card-action">
-                            <a href="#">This is a link</a>
-                        </div>
+         <div class="row"  id="row">
+            <div class="col s12 m7" style="margin:0 auto;padding: 0">
+                 <div class="card">
+                    <div class="card-image">
+                        <img src="News.jpg">
+                        <span class="card-title">${title}</span>
+                    </div>
+                    <div class="card-content">
+                         <p> ${description} </p>
+                    </div>
+                    <div class="card-action">
+                        <a href="${url}">This is a link</a>
                     </div>
                 </div>
             </div>
-        `
+        </div>
+     `
     }
+    return `
+         <div class="row"  id="row">
+            <div class="col s12 m7" style="margin:0 auto;padding: 0">
+                 <div class="card">
+                    <div class="card-image">
+                        <img src=${urlToImage}>
+                        <span class="card-title">${title}</span>
+                    </div>
+                    <div class="card-content">
+                         <p> ${description} </p>
+                    </div>
+                    <div class="card-action">
+                        <a href="${url}">This is a link</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+     `
+};

@@ -9,7 +9,12 @@
 
 
 body {
+    background-color:rgb(255, 255, 255);
+}
 
+.card-title:hover {
+    background-color: #fff;
+    opacity: .9;
 }
 
 .container_header  {
@@ -40,6 +45,7 @@ body {
 
     margin: 0 auto;
     
+    display:block;
     
 }
 
