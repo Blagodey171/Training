@@ -90,7 +90,6 @@ const newsService = (function () {
             objHttpMethods().get(`${url}/top-headlines?country=${country}&category=${category}&apiKey=${apiKey}`, cb)
         },
         everythings(searchParam, cb) {
-            // debugger
             if (searchParam) {
                 objHttpMethods().get(`${url}/everything?q=${searchParam}&apiKey=${apiKey}`, cb)
             } else objHttpMethods().get(`${url}/everything?q=random&apiKey=${apiKey}`, cb)
@@ -105,7 +104,6 @@ function clearNewsContainer (container) {
 };
 // Новости при загрузке страницы
 function loadNews (country, searchParam, category) {
-    // debugger;
     if (searchParam) {
         newsService.everythings(searchParam, renderResponse);
     } else {
@@ -121,7 +119,6 @@ function renderResponse (err, res){
     if (err) {
         // Toasts
         M.toast({html: err, displayLength: '5000'})
-        // console.log(err, res);
         return;
     }
 
